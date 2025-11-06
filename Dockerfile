@@ -16,6 +16,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 RUN pip install --no-cache-dir -e .
 
-EXPOSE 8012
+EXPOSE 5000
 
 CMD ["python", "app/application.py"]

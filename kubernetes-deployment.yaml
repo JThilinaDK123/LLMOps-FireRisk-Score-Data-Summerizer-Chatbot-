@@ -19,7 +19,7 @@ spec:
         image: us-central1-docker.pkg.dev/mlops-thilina/llmops-project/llmops-app:latest
         imagePullPolicy: IfNotPresent
         ports:
-          - containerPort: 8012
+          - containerPort: 5000
         envFrom:
           - secretRef:
               name: llmops-secrets # Pass the environment variables from the secret
@@ -36,4 +36,4 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8012
+      targetPort: 5000
