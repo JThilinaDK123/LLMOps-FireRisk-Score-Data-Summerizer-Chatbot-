@@ -16,7 +16,6 @@ spec:
     spec:
       containers:
       - name: llmops-container
-        # image: llmops-app:latest  # Use local image
         image: us-central1-docker.pkg.dev/mlops-thilina/llmops-project/llmops-app:latest
         imagePullPolicy: IfNotPresent
         ports:
