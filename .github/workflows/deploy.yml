@@ -7,10 +7,10 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  GKE_CLUSTER: "mlops-project-03-cluster"
+  GKE_CLUSTER: "llmops-project-cluster"
   GKE_REGION: "us-central1"
-  DEPLOYMENT_NAME: "mlops-app-project-03"
-  IMAGE: "us-central1-docker.pkg.dev/mlops-thilina/mlops-project/mlops-app-project-03"
+  DEPLOYMENT_NAME: "llmops-app"
+  IMAGE: "us-central1-docker.pkg.dev/mlops-thilina/mlops-project/llmops-app"
 
 jobs:
   build-and-deploy:
@@ -30,30 +30,30 @@ jobs:
           gcloud config set project $PROJECT_ID
           gcloud auth configure-docker us-central1-docker.pkg.dev
 
-      - name: Build and Push Docker Image (latest + commit tag)
-        run: |
-          docker build -t $IMAGE:$GITHUB_SHA -t $IMAGE:latest .
-          docker push $IMAGE:$GITHUB_SHA
-          docker push $IMAGE:latest
+    #   - name: Build and Push Docker Image (latest + commit tag)
+    #     run: |
+    #       docker build -t $IMAGE:$GITHUB_SHA -t $IMAGE:latest .
+    #       docker push $IMAGE:$GITHUB_SHA
+    #       docker push $IMAGE:latest
 
-      - name: Install gke-gcloud-auth-plugin
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y apt-transport-https ca-certificates gnupg
-          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list
-          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-          sudo apt-get update
-          sudo apt-get install -y google-cloud-cli-gke-gcloud-auth-plugin
-          echo "USE_GKE_GCLOUD_AUTH_PLUGIN=True" >> $GITHUB_ENV
+    #   - name: Install gke-gcloud-auth-plugin
+    #     run: |
+    #       sudo apt-get update
+    #       sudo apt-get install -y apt-transport-https ca-certificates gnupg
+    #       echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list
+    #       curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+    #       sudo apt-get update
+    #       sudo apt-get install -y google-cloud-cli-gke-gcloud-auth-plugin
+    #       echo "USE_GKE_GCLOUD_AUTH_PLUGIN=True" >> $GITHUB_ENV
 
-      - name: Configure kubectl for GKE
-        run: |
-          gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_REGION --project $PROJECT_ID
+    #   - name: Configure kubectl for GKE
+    #     run: |
+    #       gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_REGION --project $PROJECT_ID
 
-      - name: Deploy to GKE
-        run: |
-          kubectl apply -f kubernetes-deployment.yaml
-          kubectl set image deployment/$DEPLOYMENT_NAME $DEPLOYMENT_NAME=$IMAGE:latest
+    #   - name: Deploy to GKE
+    #     run: |
+    #       kubectl apply -f kubernetes-deployment.yaml
+    #       kubectl set image deployment/$DEPLOYMENT_NAME $DEPLOYMENT_NAME=$IMAGE:latest
          
 
              
